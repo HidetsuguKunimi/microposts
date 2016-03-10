@@ -1,6 +1,8 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:edit, :update, :destroy]
-
+  before_action :logged_in_user, only: [:index, :edit, :update]
+  before_action :following_id, only: [:index, :edit, :update]
+  
   def show
     @user=User.find(params[:id])
     @microposts =@user.microposts.order(created_at: :desc)
@@ -20,6 +22,11 @@ class UsersController < ApplicationController
     end
   end
   
+#追加
+  def index
+    @users=User.all
+  end
+
 #追加
   def edit
     @user=User.find(params[:id])
@@ -42,6 +49,14 @@ class UsersController < ApplicationController
     end
   end
 
+#追加
+  def following
+    @users=User.where(id:following_id)
+  end
+  
+  def follower
+    @users=User.where(id:follower_id)
+  end
 
   private
   
@@ -53,5 +68,13 @@ class UsersController < ApplicationController
     @user=User.find(params[:id])
   end
 
+#追加
+  def following_id 
+    Relationship.where(follower_id:current_user).select(:followed_id)
+  end
+
+  def follower_id 
+    Relationship.where(followed_id:current_user).select(:follower_id)
+  end
 
 end
