@@ -9,7 +9,10 @@ Rails.application.routes.draw do
   post   'login' , to: 'sessions#create'
   delete 'logout', to: 'sessions#destroy'
   
-  
+#  resources :users do
+#    get 'page/:page', :action => :index, :on => :collection
+#  end  
+
   resources :users do
     resources :followings, shallow: true
   end

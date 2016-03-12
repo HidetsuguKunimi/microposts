@@ -20,9 +20,9 @@ class MicropostsController < ApplicationController
     redirect_to request.referrer || root_url
   end
 
-  
   private
   def micropost_params
     params.require(:micropost).permit(:content)
   end
+  
 end
